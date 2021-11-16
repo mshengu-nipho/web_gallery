@@ -9,22 +9,22 @@ namespace web_gallery.Models
     public class UserController : Controller
     {
         // GET: User
+        Gallery_DatabaseEntities db = new Gallery_DatabaseEntities();
 
-
-        UsersModel db = new UsersModel();
         [HttpGet]
         public ActionResult Index()
         {
             return View();
         }
         [HttpPost]
-        public ActionResult Index(user us)
+        public ActionResult Index(User us)
         {
-            db.users.Add(us);
+            db.Users.Add(us);
             db.SaveChanges();
             return RedirectToAction("Login");
         }
         [HttpGet]
+
         public ActionResult Login()
         {
      
@@ -32,9 +32,9 @@ namespace web_gallery.Models
 
         }
         [HttpPost]
-        public ActionResult Login(user us)
+        public ActionResult Login(User us)
         {
-            var obj = db.users.Where(x => x.username.Equals(us.username) && x.password.Equals(us.password)).FirstOrDefault();
+            var obj = db.Users.Where(x => x.username.Equals(us.username) && x.password.Equals(us.password)).FirstOrDefault();
             {
                 if(obj != null)
                 {

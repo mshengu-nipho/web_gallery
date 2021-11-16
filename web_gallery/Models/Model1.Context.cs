@@ -13,10 +13,10 @@ namespace web_gallery.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class DBmodel : DbContext
+    public partial class Gallery_DatabaseEntities : DbContext
     {
-        public DBmodel()
-            : base("name=DBmodel")
+        public Gallery_DatabaseEntities()
+            : base("name=Gallery_DatabaseEntities")
         {
         }
     
@@ -25,6 +25,6 @@ namespace web_gallery.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Image> Images { get; set; }
+        public virtual DbSet<User> Users { get; set; }
     }
 }

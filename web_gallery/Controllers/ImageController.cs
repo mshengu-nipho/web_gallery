@@ -11,6 +11,9 @@ namespace web_gallery.Controllers
 {
     public class ImageController : Controller
     {
+
+        DBModel db = new DBModel();
+
         [HttpGet]
         public ActionResult Add()
         {
@@ -22,7 +25,9 @@ namespace web_gallery.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 string filename = Path.GetFileNameWithoutExtension(image.ImageFile.FileName);
+             
                 string extension = Path.GetExtension(image.ImageFile.FileName);
                 filename = filename + DateTime.Now.ToString("yymmssfff") + extension;
 
@@ -33,30 +38,26 @@ namespace web_gallery.Controllers
                 {
                     filename = Path.Combine(Server.MapPath("~/Image/"), filename);
                     image.ImageFile.SaveAs(filename);
-                    using (DBmodel db = new DBmodel())
-                    
+                    using (DBModel db = new DBModel())
+
                     {
                         db.Entry(image).State = System.Data.Entity.EntityState.Modified;
                         db.Images.Add(image);
                         db.SaveChanges();
                         TempData["msg"] = "Pictur updated";
                         return RedirectToAction("Add");
+                        ModelState.Clear();
                     }
-                    ModelState.Clear();
+                    
 
                 }
                 else
                 {
                     ViewBag.msg = "Invalid File Type";
                 }
-
-
-                
+        
             }
-            else
-            {
-                
-            }
+   
             return View();
         }
 
@@ -71,7 +72,7 @@ namespace web_gallery.Controllers
                     return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
 
                 }
-                using (DBmodel db = new DBmodel())
+                using (DBModel db = new DBModel())
 
                 {
                     var pictures = db.Images.Find(image);
@@ -99,10 +100,10 @@ namespace web_gallery.Controllers
                 }
                 else
                 {
-                    using (DBmodel db = new DBmodel())
+                    using (DBModel db = new DBModel())
                         emp.ImagePath = TempData["imagePath"].ToString();
 
-                    using (DBmodel db = new DBmodel())
+                    using (DBModel db = new DBModel())
                     {
                         db.Entry(emp).State = System.Data.Entity.EntityState.Modified;
                         if (db.SaveChanges() > 0)
@@ -113,10 +114,6 @@ namespace web_gallery.Controllers
 
                     }
                     ModelState.Clear();
-
-
-
-
 
                 }
 
@@ -131,7 +128,7 @@ namespace web_gallery.Controllers
                 return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
             }
 
-            using (DBmodel db = new DBmodel())
+            using (DBModel db = new DBModel())
 
             {
                 var pictures = db.Images.Find(image);
@@ -142,8 +139,6 @@ namespace web_gallery.Controllers
                 }
 
                 string currentImage = Request.MapPath(pictures.ImagePath);
-
-
 
                 db.Entry(pictures).State = System.Data.Entity.EntityState.Deleted;
                 if(db.SaveChanges() > 0)
@@ -157,11 +152,6 @@ namespace web_gallery.Controllers
                 }
             }
            
-
-
-
-
-
             return View();
 
         }
@@ -172,7 +162,7 @@ namespace web_gallery.Controllers
         public ActionResult View(int id)
         {
             Image image = new Image();
-            using (DBmodel db = new DBmodel())
+            using (DBModel db = new DBModel())
             {
                 image = db.Images.Where(x => x.ImageId == id).FirstOrDefault();
             }

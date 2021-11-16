@@ -13,14 +13,16 @@ namespace web_gallery.Models
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Web;
-    
     public partial class Image
     {
         public int ImageId { get; set; }
-        public string Title { get; set; }
-        [DisplayName("Upload File")]
         public string ImagePath { get; set; }
-
-        public HttpPostedFileBase ImageFile { get; set;}
+       // [DisplayName("Upload File")]
+        public string Geolocation { get; set; }
+        public string Tags { get; set; }
+        public Nullable<System.DateTime> Captured_date { get; set; }
+        public string Captured_by { get; set; }
+        [DisplayName("Upload File")]
+        public HttpPostedFileBase ImageFile {get; set;}
     }
 }
